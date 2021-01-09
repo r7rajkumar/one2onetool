@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    tools {nodejs "latest"}
+    tools {nodejs "NodeJS"}
 
     stages {
         stage('Download the code') {
