@@ -1,7 +1,6 @@
 pipeline {
     agent any
     tools {nodejs "NodeJS"}
-    currentBuild.result = "SUCCESS"
 
             stages {
 
@@ -10,6 +9,8 @@ pipeline {
                             script {
                                 try {
                                     git 'https://github.com/r7rajkumar/one2onetool.git'
+                                    currentBuild.result = 'SUCCESS'
+
                                 }
                                 catch(all) {
                                     currentBuild.result='FAILURE'
