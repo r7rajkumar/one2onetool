@@ -5,34 +5,20 @@ pipeline {
 
             stages {
 
-                 try {
-
-                       stage('Clone git') {
-                            steps {
-                                 git 'https://github.com/r7rajkumar/one2onetool.git'
+                  stage('Clone git') {
+                        steps {
+                            script {
+                                try {
+                                    git 'https://github.com/r7rajkumar/one2onetool.git'
+                                }
+                                catch(all) {
+                                    currentBuild.result='FAILURE'
+                                }
                             }
                         }
+                    }
 
-                       stage('Test'){
-
-                         env.NODE_ENV = "test"
-                         print "Environment will be : ${env.NODE_ENV}"
-                         sh 'node -v'
-                         sh 'npm prune'
-                         sh 'npm install'
-                         echo 'success'
-                       }
-
-
-                 }
-                catch (err) {
-
-                    currentBuild.result = "FAILURE"
-
-                      throw err
-                }
-
-            }
+             }
     }
 
 
