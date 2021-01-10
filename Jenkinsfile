@@ -1,28 +1,41 @@
 pipeline {
     agent any
     tools {nodejs "NodeJS"}
+    currentBuild.result = "SUCCESS"
 
-    stages {
-        stage('Download the code') {
-            steps {
-                //sh git clone: https://github.com/r7rajkumar/one2onetool.git
-                //test
-                git 'https://github.com/r7rajkumar/one2onetool.git'
+            stages {
+
+                 try {
+
+                       stage('Clone git') {
+                            steps {
+                                 git 'https://github.com/r7rajkumar/one2onetool.git'
+                            }
+                        }
+
+                       stage('Test'){
+
+                         env.NODE_ENV = "test"
+
+                         print "Environment will be : ${env.NODE_ENV}"
+
+                         sh 'node -v'
+                         sh 'npm prune'
+                         sh 'npm install'
+                         sh 'npm test'
+
+                       }
+
 
             }
-        }
-        stage('Build') {
-            steps {
-                //sh 'npm install'
-                echo "Installing npm files"
-            }
-        }
+            catch (err) {
 
-       stage('Test') {
-          steps {
-            sh 'npm test'
-          }
-    }
+                currentBuild.result = "FAILURE"
+
+                  throw err
+            }
+
+       }
     }
 }
 
